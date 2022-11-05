@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply font-bold tracking-wide
+    }
+}
+
+@layer components {
+    .social {
+        @apply hover:scale-90 transition-all ease-in-out
+    }
+}
