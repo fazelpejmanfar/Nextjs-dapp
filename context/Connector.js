@@ -4,12 +4,46 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { toast } from 'react-hot-toast'
 import ABI from './abi.json'
+import useSWR from "swr";
+
+
 
 export const EthersContext = createContext({});
 
 
 
-const providerOptions = {
+export default function Wrapper({ children }) {
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data, error } = useSWR(
+    "/Whitelist/Accounts.json",
+    fetcher
+  );
+  const WLS = data;
+
+  const { MerkleTree } = require('merkletreejs');
+  const keccak256 = require('keccak256');
+  const [address, setaddress] = useState();
+  const [isConnected, setisConnected] = useState(false);
+  const [Contract, setContract] = useState();
+  const [Provider, setProvider] = useState();
+  const [Price, setPrice] = useState(0.012);
+  const [WLPrice, setWLPrice] = useState(0.012);
+  const [Supply, setSupply] = useState(999);
+  const [WLSupply, setWLSupply] = useState(999);
+  const [Minted, setMinted] = useState(0);
+  const [MaxPerWallet, setMaxperWallet] = useState(2);
+  const [MaxPerWalletWL, setMaxperWalletWL] = useState(2);
+  const [UserMinted, setUserMinted] = useState(0);
+  const [UserMintedPresale, setUserMintedPresale] = useState(0);
+  const [Presale, setPresale] = useState(true);
+  const [Paused, setPaused] = useState(false);
+  const [UserProof, setUserProof] = useState([]);
+  const [MRoot, setMRoot] = useState();
+  const ContractAddress = "0x9EE4490A25C674Faa300327925b453698c413A32";
+  const ChainID = {network: "Goerli", ID: 5};
+
+
+  const providerOptions = {
     walletconnect: {
       package: WalletConnectProvider,
       display: {
@@ -21,24 +55,6 @@ const providerOptions = {
       }
     }
   };
-
-export default function Wrapper({ children }) {
-
-
-  const [address, setaddress] = useState();
-  const [isConnected, setisConnected] = useState(false);
-  const [Contract, setContract] = useState();
-  const [Provider, setProvider] = useState();
-  const [Price, setPrice] = useState(0.012);
-  const [Supply, setSupply] = useState(999);
-  const [Minted, setMinted] = useState(0);
-  const [MaxPerWallet, setMaxperWallet] = useState(1);
-  const [UserMinted, setUserMinted] = useState(0);
-  const [Presale, setPresale] = useState(true);
-  const [Paused, setPaused] = useState(false);
-  const ContractAddress = "0x614f969742B2e26b0265Ac13Ec788769735a24BF";
-  const ChainID = {network: "Gorli", ID: 5};
-
 
   const connect = async () => {
     const web3Modal = new Web3Modal({
@@ -64,22 +80,43 @@ export default function Wrapper({ children }) {
         setContract(CT);
         const supply = await CT.maxSupply();
         setSupply(Number(supply));
+        const wlsupply = await CT.WlSupply();
+        setWLSupply(Number(wlsupply));
         const minted = await CT.totalSupply();
         setMinted(Number(minted))
         const price = await CT.cost();
         setPrice(Number(price));
+        const pricewl = await CT.wlcost();
+        setWLPrice(Number(pricewl));
         const perwallet = await CT.MaxperWallet();
         setMaxperWallet(Number(perwallet));
-        const userminted = await CT.numberMinted(account[0]);
+        const perwalletwl = await CT.MaxperWalletWl();
+        setMaxperWalletWL(Number(perwalletwl));
+        const userminted = await CT.PublicMintofUser(account[0]);
         setUserMinted(Number(userminted));
+        const usermintedpresale = await CT.WhitelistedMintofUser(account[0]);
+        setUserMintedPresale(Number(usermintedpresale));
         const presale = await CT.preSale();
         setPresale(presale);
         const pause = await CT.paused();
         setPaused(pause);
-        setaddress(account[0])
-        setisConnected(true);
-        toast.dismiss();
-        toast.success(`Connected to ${provider.connection.url === 'metamask' ? "MetaMask" : "Wallet Connect"}`);
+        const leafNodes = WLS.map(addr => keccak256(addr));
+        const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+        const rootHash = merkleTree.getRoot();
+        console.log("Root Hash: ", '0x' + rootHash.toString('hex'));
+        const claimingAddress = keccak256(account[0]);
+        const hexProof = merkleTree.getHexProof(claimingAddress);
+        setUserProof(hexProof);
+        if(hexProof.length <= 0 && presale) {
+          toast.dismiss();
+          toast.error("You are not whitelisted");
+          return
+        } else {
+          setaddress(account[0])
+          setisConnected(true);
+          toast.dismiss();
+          toast.success(`Connected to ${provider.connection.url === 'metamask' ? "MetaMask" : "Wallet Connect"}`);
+        }
       } catch (err) {
         toast.dismiss();
         toast.error(err.message);
@@ -99,22 +136,31 @@ export default function Wrapper({ children }) {
       toast.error("Contract is Paused...");
       return
     };
-    if(hexProof.length <= 0) {
+    if(UserProof.length <= 0) {
       toast.dismiss();
       toast.error("You are not Whitelisted...");
       return
     };
-    if(Number(Minted) >= Number(Supply)) {
+    if(Number(Minted) >= Number(WLSupply)) {
       toast.dismiss();
       toast.success("SOLD OUT");
+      return
+    };
+    if(Number(UserMintedPresale + Token) > Number(MaxPerWalletWL)) {
+      toast.dismiss();
+      toast.error("Wallet Limit Reached");
+      return  
+    };
+    if(MRoot == "0x0000000000000000000000000000000000000000000000000000000000000000") {
+      toast.dismiss();
+      toast.error("Sale hasn't Started Yet...");
       return
     };
     try {
       toast.loading("Minting...");
       let price = String(Token * Price);
-      const mint = await Contract.presalemint(Token, hexProof, {
+      const mint = await Contract.presalemint(Token, UserProof, {
         from: address,
-        gasLimit: 115000,
         value: price
       });
       const TX = await mint.wait().then(async(receipt) => {
@@ -122,8 +168,8 @@ export default function Wrapper({ children }) {
         toast.success("Mint done");
         const minted = await Contract.totalSupply();
         setMinted(Number(minted))
-        const userminted = await Contract.numberMinted(account[0]);
-        setUserMinted(Number(userminted));
+        const usermintedpresale = await Contract.WhitelistedMintofUser(address);
+        setUserMintedPresale(Number(usermintedpresale));
       })
     } catch (err) {
       toast.dismiss();
@@ -143,12 +189,16 @@ export default function Wrapper({ children }) {
       toast.success("SOLD OUT");
       return
     };
+    if(Number(UserMinted + Token) > Number(MaxPerWallet)) {
+      toast.dismiss();
+      toast.error("Wallet Limit Reached");
+      return  
+    };
     try {
       toast.loading("Minting...");
       let price = String(Token * Price);
       const mint = await Contract.mint(Token, {
         from: address,
-        gasLimit: 115000,
         value: price
       });
       const TX = await mint.wait().then(async(receipt) => {
@@ -156,7 +206,7 @@ export default function Wrapper({ children }) {
         toast.success("Mint done");
         const minted = await Contract.totalSupply();
         setMinted(Number(minted))
-        const userminted = await Contract.numberMinted(account[0]);
+        const userminted = await Contract.PublicMintofUser(address);
         setUserMinted(Number(userminted));
       })
     } catch (err) {
@@ -166,29 +216,6 @@ export default function Wrapper({ children }) {
   };
 
 
-    //Whitelist Setup
-    const { MerkleTree } = require('merkletreejs');
-    const keccak256 = require('keccak256');
-    const [WlAddresses, setWlAddresses] = useState([]);
-    const leafNodes = WlAddresses.map(addr => keccak256(addr));
-    const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
-    const rootHash = merkleTree.getRoot();
-    console.log("Root Hash: ", '0x' + rootHash.toString('hex'));
-    const claimingAddress = keccak256(address);
-    const hexProof = merkleTree.getHexProof(claimingAddress);
-    //Whitelist ends
-
-
-  const GetWhitelistAccs = async() => {
-    const Addresses = await fetch("/Whitelist/Accounts.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    const FullAddresses = await Addresses.json();
-    setWlAddresses(FullAddresses);
-  };
 
 
   useEffect(() => {
@@ -205,12 +232,9 @@ export default function Wrapper({ children }) {
     }
   }, [Provider]);
 
-  useEffect(() => {
-    GetWhitelistAccs();
-  }, []);
 
   return (
-    <EthersContext.Provider value={{ connect, disconnect, Mint, PresaleMint, address, isConnected, Supply, Minted }}>
+    <EthersContext.Provider value={{ connect, disconnect, Mint, PresaleMint, Presale, address, isConnected, Supply, WLSupply, Minted, MaxPerWallet, MaxPerWalletWL, Price, WLPrice }}>
       {children}
     </EthersContext.Provider>
   );

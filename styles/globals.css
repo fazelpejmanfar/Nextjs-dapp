@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply font-bold tracking-wide
+        @apply font-bold tracking-wide text-[#14213D] font-mono tracking-widest
     }
 }
 
