@@ -100,6 +100,8 @@ export default function Wrapper({ children }) {
         setPresale(presale);
         const pause = await CT.paused();
         setPaused(pause);
+        const mroot = await CT.merkleRoot();
+        setMRoot(mroot);
         const leafNodes = WLS.map(addr => keccak256(addr));
         const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
         const rootHash = merkleTree.getRoot();
