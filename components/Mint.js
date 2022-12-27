@@ -57,7 +57,7 @@ function Mint() {
       </div>
 
 
-      <div id='containerbox' className={`${ETH.address ? 'flex' : 'hidden'} bg-zinc-300 text-center flex-col sm:flex-row sm:justify-around justify-center items-center space-y-5 sm:space-y-0 p-2 w-[95%] sm:w-[60%] min-h-[400px] shadow-lg rounded-tl-2xl rounded-br-2xl`}>
+      <div id='containerbox' className={`${ETH.address ? 'flex' : 'hidden'} bg-zinc-300 text-center flex-col sm:flex-row sm:justify-around justify-center items-center space-y-5 sm:space-y-0 p-2 w-[95%] lg:w-[60%] min-h-[400px] shadow-lg rounded-tl-2xl rounded-br-2xl`}>
       <div className='sm:w-[300px] w-[250px]'>
       <Swiper
         effect={"cube"}
