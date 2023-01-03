@@ -1,14 +1,15 @@
 {
-  "name": "nextjs-etherjs-boilerplate",
+  "name": "nextjs-dapp",
   "description": "Created By Fazel Pejmanfar\n do the design yourself :|",
   "author": {
     "name": "Fazel Pejmanfar"
   },
+  "license": "MIT",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },

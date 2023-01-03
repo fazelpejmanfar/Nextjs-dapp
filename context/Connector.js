@@ -120,9 +120,10 @@ export default function Wrapper({ children }) {
           toast.success(`Connected to ${provider.connection.url === 'metamask' ? "MetaMask" : "Wallet Connect"}`);
         }
       } catch (err) {
+        const newErr = err.message.replace(/\(.*\)/, '');
         toast.dismiss();
-        toast.error(err.message);
-        console.log(err)
+        toast.error(String(newErr));
+        console.log(newErr)
       }
   };
 
@@ -174,8 +175,10 @@ export default function Wrapper({ children }) {
         setUserMintedPresale(Number(usermintedpresale));
       })
     } catch (err) {
+      const newErr = err.message.replace(/\(.*\)/, '');
       toast.dismiss();
-      toast.error(err.message);
+      toast.error(String(newErr));
+      console.log(newErr)
     }
   };
 
@@ -212,8 +215,10 @@ export default function Wrapper({ children }) {
         setUserMinted(Number(userminted));
       })
     } catch (err) {
+      const newErr = err.message.replace(/\(.*\)/, '');
       toast.dismiss();
-      toast.error(err.message);
+      toast.error(String(newErr));
+      console.log(newErr)
     }
   };
 
