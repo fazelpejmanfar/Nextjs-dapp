@@ -226,6 +226,23 @@ export default function Wrapper({ children }) {
     }
   };
 
+  const controllers = {
+    connect,
+    disconnect,
+    Mint,
+    PresaleMint,
+    Presale,
+    address,
+    isConnected,
+    Supply,
+    WLSupply,
+    Minted,
+    MaxPerWallet,
+    MaxPerWalletWL,
+    Price,
+    WLPrice
+  };
+
   useEffect(() => {
     if (Provider?.on) {
       const handleAccountsChanged = (accounts) => {
@@ -240,24 +257,11 @@ export default function Wrapper({ children }) {
     }
   }, [Provider]);
 
+
+
   return (
     <EthersContext.Provider
-      value={{
-        connect,
-        disconnect,
-        Mint,
-        PresaleMint,
-        Presale,
-        address,
-        isConnected,
-        Supply,
-        WLSupply,
-        Minted,
-        MaxPerWallet,
-        MaxPerWalletWL,
-        Price,
-        WLPrice,
-      }}
+      value={controllers}
     >
       {children}
     </EthersContext.Provider>
