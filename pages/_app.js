@@ -1,15 +1,13 @@
 import '../styles/globals.css'
-import Wrapper from '../context/Connector'
+import Web3Providers from '../providers/Connector'
 import { Toaster } from 'react-hot-toast'
-import MusicPlayer from '../components/MusicPlayer'
-
+import { ToastOptions } from '../lib/toastOptions'
 function MyApp({ Component, pageProps }) {
   return (
-    <Wrapper>
-    <Toaster/>
+    <Web3Providers>
+    <Toaster toastOptions={ToastOptions}/>
   <Component {...pageProps} />
-  <MusicPlayer/>
-  </Wrapper>
+  </Web3Providers>
 )}
 
 export default MyApp

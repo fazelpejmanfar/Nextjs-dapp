@@ -2,14 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Kanit";
+    src: url('/assets//fonts/KanitRegular.ttf');
+}
+
+
 @layer base {
     body {
-        @apply font-bold tracking-wide text-[#14213D] font-mono tracking-widest
+        @apply font-bold tracking-widest text-white font-kanit uppercase  bg-gradient-to-b from-[#D8E7F8] from-80% to-white
     }
 }
 
 @layer components {
     .social {
-        @apply hover:scale-90 transition-all ease-in-out
+        @apply transition-all ease-in-out hover:scale-90
+    }
+    .btns {
+        @apply  disabled:bg-[#2373ff] w-[180px] h-[50px] font-bold text-xl uppercase tracking-widest text-white bg-[#00abe4] hover:bg-[#2373ff] rounded-md transition-all ease-in-out
+    }
+    .incrementbtn {
+        @apply disabled:bg-[#2373ff] text-white p-2 flex justify-center items-center rounded-full bg-[#00abe4] hover:bg-[#2373ff] transition-all ease-in-out
+    }
+    .titleinfo {
+        @apply text-lg sm:text-xl tracking-widest
+    }
+    .textinfo {
+        @apply text-lg sm:text-xl tracking-widest
     }
 }
