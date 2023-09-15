@@ -43,13 +43,14 @@ export default function Web3Providers({ children }) {
       wallets: [
         injectedWallet({ chains }),
         metaMaskWallet({ projectId, chains }),
-        //walletConnectWallet({ projectId, chains }),
+        trustWallet({chains, projectId}),
         coinbaseWallet({ projectId, chains }),
       ],
     },
     {
       groupName: 'More',
       wallets: [
+        walletConnectWallet({projectId, chains}),
         rainbowWallet({ projectId, chains }),
         argentWallet({ projectId, chains }),
         safeWallet({ chains }),
