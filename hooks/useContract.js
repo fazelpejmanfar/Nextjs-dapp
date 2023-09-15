@@ -82,6 +82,7 @@ function useContract() {
     hash: PublicMintData?.hash,
   });
 
+
   const {
     config: PresaleMintConfig,
     isError: PresaleisErr,
@@ -168,6 +169,7 @@ function useContract() {
     PresaleMintTXErr,
   ]);
 
+  
   return {
     HandleMint,
     IncrementTokens,
