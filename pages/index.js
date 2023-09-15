@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Header from "../components/Header";
 import Mint from "../components/Mint";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <section className="w-full px-5">
         <Mint />
       </section>
+      <Footer/>
     </div>
   );
 }

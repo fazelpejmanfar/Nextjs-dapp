@@ -33,7 +33,7 @@ import {
 
 export default function Web3Providers({ children }) {
   const { chains, publicClient } = configureChains(
-    [mainnet, goerli],
+    [goerli, mainnet],
     [infuraProvider({ apiKey: infuraApiKey }), publicProvider()]
   );
 
@@ -76,7 +76,7 @@ export default function Web3Providers({ children }) {
         chains={chains}
         coolMode
         appInfo={{
-          appName: CollectionName
+          appName: CollectionName,
         }}
         initialChain={contractChainId == 5 ? goerli : mainnet}
       >

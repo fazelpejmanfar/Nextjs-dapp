@@ -38,26 +38,29 @@ function Mint() {
         duration: 1,
       }}
     >
+      
       <div
-        className={`flex bg-white text-black shadow-2xl text-center flex-col justify-center items-center p-2 w-[95%] lg:w-[600px] min-h-[300px] rounded-xl`}
+        className={`border border-[#60B7BC] relative flex bg-gradient-to-b from-[#AED8DA] from-50% to-white text-black shadow-2xl text-center flex-col justify-center items-center p-2 w-[95%] lg:w-[600px] min-h-[300px] rounded-xl`}
       >
+        <div className="absolute border-2 border-[#60B7BC] left-3 h-full"/>
+        <div className="absolute border-2 border-[#60B7BC] right-3 h-full"/>
         <div className="flex flex-col justify-center items-center space-y-4 z-10 w-full px-5">
           {!address ? (
             <>
-              <h1 className="text-2xl sm:text-3xl">Welcome to Fantasy World</h1>
-              <button className="btns" onClick={openConnectModal}>
-                Connect
+              <h1 className="text-2xl sm:text-3xl">pomedoge minting dapp</h1>
+              <button className="btns w-fit " onClick={openConnectModal}>
+                Connect Wallet
               </button>
             </>
           ) : (
             <>
-              <div className="w-full flex justify-between items-center border-b-4 border-[#2373ff] py-2">
+              <div className="w-full flex justify-between items-center border-b-4 border-[#60B7BC] py-2">
                 <p className="sm:text-xl text-base">
                   {String(address).substring(0, 4)}...
                   {String(address).substring(38, 42)}
                 </p>
                 <button
-                  className="bg-[#00abe4] hover:bg-[#2373ff] rounded-md p-2 text-white text-xs"
+                  className="bg-[#60B7BC] hover:bg-[#3e898d] rounded-md p-2 text-black text-xs"
                   onClick={openAccountModal}
                 >
                   Account Info
@@ -105,7 +108,7 @@ function Mint() {
                       DecrementTokens();
                     }}
                   >
-                    <ChevronDoubleLeftIcon className="w-6 h-6 fill-white" />
+                    <ChevronDoubleLeftIcon className="w-6 h-6 fill-black" />
                   </button>
                   <h1 className=" font-bold text-3xl">{Token}</h1>
                   <button
@@ -116,7 +119,7 @@ function Mint() {
                       IncrementTokens();
                     }}
                   >
-                    <ChevronDoubleRightIcon className="w-6 h-6 fill-white" />
+                    <ChevronDoubleRightIcon className="w-6 h-6 fill-black" />
                   </button>
                 </div>
               </div>

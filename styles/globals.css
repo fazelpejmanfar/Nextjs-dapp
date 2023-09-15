@@ -10,7 +10,7 @@
 
 @layer base {
     body {
-        @apply font-bold tracking-widest text-white font-kanit uppercase  bg-gradient-to-b from-[#D8E7F8] from-70% to-slate-500
+        @apply font-bold tracking-widest text-white font-kanit uppercase bg-[url('/assets/bg.png')] bg-cover bg-center
     }
 }
 
@@ -19,10 +19,10 @@
         @apply transition-all ease-in-out hover:scale-90
     }
     .btns {
-        @apply  disabled:bg-[#2373ff] w-[180px] h-[50px] font-bold text-xl uppercase tracking-widest text-white bg-[#00abe4] hover:bg-[#2373ff] rounded-md transition-all ease-in-out
+        @apply border-2 p-2 border-[#60B7BC] disabled:border-[#163638] sm:w-[180px] sm:h-[50px] font-bold text-xl uppercase tracking-widest text-black hover:border-[#499a9e] rounded-md transition-all ease-in-out
     }
     .incrementbtn {
-        @apply disabled:bg-[#2373ff] text-white p-2 flex justify-center items-center rounded-full bg-[#00abe4] hover:bg-[#2373ff] transition-all ease-in-out
+        @apply border-2 border-[#60B7BC] disabled:border-[#163638] text-black p-2 flex justify-center items-center rounded-full hover:border-[#499a9e] transition-all ease-in-out
     }
     .titleinfo {
         @apply text-lg sm:text-xl tracking-widest
