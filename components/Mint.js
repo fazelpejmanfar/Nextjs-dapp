@@ -42,8 +42,32 @@ function Mint() {
       <div
         className={`border border-[#60B7BC] relative flex bg-gradient-to-b from-[#AED8DA] from-50% to-white text-black shadow-2xl text-center flex-col justify-center items-center p-2 w-[95%] lg:w-[600px] min-h-[300px] rounded-xl`}
       >
-        <div className="absolute border-2 border-[#60B7BC] left-3 h-full"/>
-        <div className="absolute border-2 border-[#60B7BC] right-3 h-full"/>
+        <div className="absolute left-3 h-full flex flex-col gap-3 overflow-hidden">
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+        </div>
+        <div className="absolute right-3 h-full flex flex-col gap-3 overflow-hidden">
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-1 h-5 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+        </div>
         <div className="flex flex-col justify-center items-center space-y-4 z-10 w-full px-5">
           {!address ? (
             <>
@@ -54,7 +78,26 @@ function Mint() {
             </>
           ) : (
             <>
-              <div className="w-full flex justify-between items-center border-b-4 border-[#60B7BC] py-2">
+              <div className="relative w-full flex justify-between items-center  py-2">
+              <div className="absolute top-12 w-full flex justify-center items-center gap-3 overflow-hidden">
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+          <div className="w-5 h-1 bg-[#60B7BC] rounded-tl-2xl rounded-br-2xl"/>
+        </div>
                 <p className="sm:text-xl text-base">
                   {String(address).substring(0, 4)}...
                   {String(address).substring(38, 42)}
