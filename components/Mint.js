@@ -144,7 +144,7 @@ function Mint() {
               >
                 <div className="flex justify-between items-center p-2 rounded-md w-[180px]">
                   <button
-                    className="incrementbtn"
+                    className={`incrementbtn ${PublicMintTXLoading || PresaleMintTXLoading ? "animate-pulse" : ""}`}
                     disabled={PublicMintTXLoading || PresaleMintTXLoading}
                     onClick={(e) => {
                       e.preventDefault();
@@ -155,7 +155,7 @@ function Mint() {
                   </button>
                   <h1 className=" font-bold text-3xl">{Token}</h1>
                   <button
-                    className="incrementbtn"
+                    className={`incrementbtn ${PublicMintTXLoading || PresaleMintTXLoading ? "animate-pulse" : ""}`}
                     disabled={PublicMintTXLoading || PresaleMintTXLoading}
                     onClick={(e) => {
                       e.preventDefault();
