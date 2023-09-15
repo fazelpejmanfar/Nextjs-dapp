@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        "5xl": "2000px"
+      },
       fontFamily: {
         kanit: ["Kanit", "sans-serif"]
       }

@@ -10,7 +10,7 @@
 
 @layer base {
     body {
-        @apply font-bold tracking-widest text-white font-kanit uppercase bg-[url('/assets/bg.png')]
+        @apply font-bold tracking-widest text-white font-kanit uppercase bg-[url('/assets/bg.png')] bg-no-repeat 5xl:bg-cover
     }
 }
 
