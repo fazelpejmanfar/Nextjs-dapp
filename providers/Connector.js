@@ -25,17 +25,15 @@ import {
   braveWallet,
   bitskiWallet
 } from '@rainbow-me/rainbowkit/wallets';
+import { contractChainId } from "../lib/constants";
+
+
 export default function Web3Providers({ children }) {
   const { chains, publicClient } = configureChains(
     [goerli],
     [publicProvider()]
   );
 
-/*   const { connectors } = getDefaultWallets({
-    appName: CollectionName,
-    projectId: projectId,
-    chains,
-  }); */
 
   const connectors = connectorsForWallets([
     {
@@ -74,7 +72,7 @@ export default function Web3Providers({ children }) {
 
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} coolMode initialChain={goerli}>
+      <RainbowKitProvider chains={chains} coolMode initialChain={contractChainId == 5 ? goerli : mainnet}>
         {children}
       </RainbowKitProvider>
     </WagmiConfig>
