@@ -169,6 +169,7 @@ function useContract() {
     PresaleMintTXErr,
   ]);
 
+  console.log(getMerkleRoot())
   
   return {
     HandleMint,
