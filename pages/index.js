@@ -9,7 +9,7 @@ export default function Home() {
       className="flex flex-col min-h-screen justify-center items-center"
     >
       <Head>
-        <title>Nextjs Boilerplate Minting Dapp</title>
+        <title>NFT Mint dApp</title>
         <meta name="description" content="Created by Fazel" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
