@@ -2,124 +2,26 @@ import Head from "next/head";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useConnectModal, useAccountModal } from "@rainbow-me/rainbowkit";
-import {
-  useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-  useContractReads,
-} from "wagmi";
-import { useEffect, useState } from "react";
-import useContract from "../hooks/useContract";
+import { useAccount } from "wagmi";
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/24/solid";
-import { ContractAddress } from "../lib/constants";
-import toast from "react-hot-toast";
+import useContract from "../hooks/useContract";
 
 function Mint() {
-  const [Token, setToken] = useState(1);
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const { address } = useAccount();
   const {
-    data: CollectionInfo,
-    isError: CollectionInfoErr,
-    isLoading: CollectionInfoLoading,
-  } = useContractReads({
-    contracts: [
-      {
-        ...ContractAddress,
-        functionName: "totalSupply",
-      },
-      {
-        ...ContractAddress,
-        functionName: "maxSupply",
-      },
-      {
-        ...ContractAddress,
-        functionName: "cost",
-      },
-      {
-        ...ContractAddress,
-        functionName: "preSale",
-      },
-      {
-        ...ContractAddress,
-        functionName: "WlSupply",
-      },
-      {
-        ...ContractAddress,
-        functionName: "wlcost",
-      },
-    ],
-  });
-
-  const {
-    config: PublicMintConfig,
-    isError,
-    error: PublicMintConfigCheckErr,
-  } = usePrepareContractWrite({
-    address: ContractAddress.address,
-    abi: ContractAddress.abi,
-    functionName: "mint",
-    args: [Token],
-    value: CollectionInfo ? (CollectionInfo[2]?.result * BigInt(Token)) : "0",
-  });
-  
-  const {
-    data: PublicMintData,
-    isLoading: PublicMintTXLoading,
-    write,
-    error: PublicMintTXErr,
-  } = useContractWrite(PublicMintConfig);
-
-  const { isSuccess: PublicMintSuccess } = useWaitForTransaction({
-    hash: PublicMintData?.hash,
-  });
-
-  const HandleMint = async () => {
-    try {
-      if (PublicMintConfigCheckErr) {
-        throw new Error(PublicMintConfigCheckErr);
-      }
-      const tx = await write?.();
-    } catch (err) {
-      toast.dismiss();
-      toast.error(err.message.split(":")[3].split("\n")[0]);
-    }
-  };
-
-  const IncrementTokens = () => {
-    let NewTokens = Token + 1;
-    if (NewTokens > 10) {
-      NewTokens = 10;
-    }
-    setToken(NewTokens);
-  };
-
-  const DecrementTokens = () => {
-    let NewTokens = Token - 1;
-    if (NewTokens < 1) {
-      NewTokens = 1;
-    }
-    setToken(NewTokens);
-  };
-  useEffect(() => {
-    if (PublicMintTXLoading) {
-      toast.dismiss();
-      toast.loading("Minting...");
-    }
-    if (PublicMintSuccess) {
-      toast.dismiss();
-      toast.success("Minted");
-    }
-    if (PublicMintTXErr) {
-      toast.dismiss();
-      toast.error(PublicMintTXErr.message.split("\n")[0]);
-    }
-  }, [PublicMintTXLoading, PublicMintSuccess, PublicMintTXErr]);
+    HandleMint,
+    CollectionInfo,
+    PublicMintTXLoading,
+    PresaleMintTXLoading,
+    IncrementTokens,
+    DecrementTokens,
+    Token,
+  } = useContract();
 
   return (
     <motion.div
@@ -177,10 +79,17 @@ function Mint() {
 
               <div className="w-full flex justify-between items-center">
                 <h1 className="titleinfo">Price: </h1>
-                <h3 className="textinfo">
-                  {(Number(CollectionInfo[2].result) * Number(Token)) / 1e18}{" "}
-                  ETH
-                </h3>
+                {!CollectionInfo[3]?.result ? (
+                  <h3 className="textinfo">
+                    {(Number(CollectionInfo[2].result) * Number(Token)) / 1e18}{" "}
+                    ETH
+                  </h3>
+                ) : (
+                  <h3 className="textinfo">
+                    {(Number(CollectionInfo[5].result) * Number(Token)) / 1e18}{" "}
+                    ETH
+                  </h3>
+                )}
               </div>
               <div
                 className={`w-full flex flex-col justify-center items-center gap-3 ${
@@ -190,7 +99,7 @@ function Mint() {
                 <div className="flex justify-between items-center p-2 rounded-md w-[180px]">
                   <button
                     className="incrementbtn"
-                    disabled={PublicMintTXLoading}
+                    disabled={PublicMintTXLoading || PresaleMintTXLoading}
                     onClick={(e) => {
                       e.preventDefault();
                       DecrementTokens();
@@ -201,7 +110,7 @@ function Mint() {
                   <h1 className=" font-bold text-3xl">{Token}</h1>
                   <button
                     className="incrementbtn"
-                    disabled={PublicMintTXLoading}
+                    disabled={PublicMintTXLoading || PresaleMintTXLoading}
                     onClick={(e) => {
                       e.preventDefault();
                       IncrementTokens();
@@ -213,8 +122,8 @@ function Mint() {
               </div>
 
               <button
-                className="btns"
-                disabled={PublicMintTXLoading}
+                className={`btns ${PublicMintTXLoading || PresaleMintTXLoading ? "animate-pulse" : ""}`}
+                disabled={PublicMintTXLoading || PresaleMintTXLoading}
                 onClick={() => HandleMint()}
               >
                 Mint

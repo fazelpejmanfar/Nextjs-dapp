@@ -1,14 +1,13 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import {
-  getDefaultWallets,
   RainbowKitProvider,
   useConnectModal,
-  connectorsForWallets 
+  connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
-import { projectId, CollectionName } from "../lib/constants";
+import { infuraProvider } from "wagmi/providers/infura";
 import {
   injectedWallet,
   metaMaskWallet,
@@ -23,43 +22,46 @@ import {
   okxWallet,
   ledgerWallet,
   braveWallet,
-  bitskiWallet
-} from '@rainbow-me/rainbowkit/wallets';
-import { contractChainId } from "../lib/constants";
-
+  bitskiWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import {
+  contractChainId,
+  infuraApiKey,
+  projectId,
+  CollectionName,
+} from "../lib/constants";
 
 export default function Web3Providers({ children }) {
   const { chains, publicClient } = configureChains(
-    [goerli],
-    [publicProvider()]
+    [mainnet, goerli],
+    [infuraProvider({ apiKey: infuraApiKey }), publicProvider()]
   );
-
 
   const connectors = connectorsForWallets([
     {
-      groupName: 'Popular',
+      groupName: "Popular",
       wallets: [
         injectedWallet({ chains }),
         metaMaskWallet({ projectId, chains }),
-        trustWallet({chains, projectId}),
+        trustWallet({ chains, projectId }),
         coinbaseWallet({ projectId, chains }),
       ],
     },
     {
-      groupName: 'More',
+      groupName: "More",
       wallets: [
-        walletConnectWallet({projectId, chains}),
+        walletConnectWallet({ projectId, chains }),
         rainbowWallet({ projectId, chains }),
         argentWallet({ projectId, chains }),
         safeWallet({ chains }),
-        dawnWallet({chains }),
+        dawnWallet({ chains }),
         phantomWallet({ chains }),
         okxWallet({ projectId, chains }),
         ledgerWallet({ projectId, chains }),
         braveWallet({ chains }),
-        bitskiWallet({  chains }),
+        bitskiWallet({ chains }),
       ],
-    }
+    },
   ]);
 
   const wagmiConfig = createConfig({
@@ -68,11 +70,16 @@ export default function Web3Providers({ children }) {
     publicClient,
   });
 
-
-
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} coolMode initialChain={contractChainId == 5 ? goerli : mainnet}>
+      <RainbowKitProvider
+        chains={chains}
+        coolMode
+        appInfo={{
+          appName: CollectionName
+        }}
+        initialChain={contractChainId == 5 ? goerli : mainnet}
+      >
         {children}
       </RainbowKitProvider>
     </WagmiConfig>
