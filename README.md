@@ -20,9 +20,9 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**REMEMBER TO CHANGE YOUR COLLECTION INFO IN `lib/constants.js`**
 
-REMEMBER TO CHANGE YOUR COLLECTION INFO IN `lib/constants.js`.
+you need a wallet connect project id and infura api key.
 
 You can start editing the page by modifying `components/Mint.js`. The page auto-updates as you edit the file.
 
